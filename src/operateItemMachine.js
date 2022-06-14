@@ -25,9 +25,10 @@ const operateItemMachine = createMachine({
             on: {
                 CLEAR: {
                     target: 'inactive',
-                    actions: () => {
-                        assign({ operateItem: null });
-                    },
+                    actions: ['clearItem'],
+                    // actions: () => {
+                    //     assign({ operateItem: null });
+                    // },
                 },
                 SET: {
                     target: 'active',
@@ -46,6 +47,9 @@ const operateItemMachine = createMachine({
         // 要這樣寫
         setItem: assign({
             operateItem: (context, event) => event.data,
+        }),
+        clearItem: assign({
+            operateItem: (context, event) => null,
         }),
     }
 });
