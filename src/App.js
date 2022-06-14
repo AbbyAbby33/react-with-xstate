@@ -43,10 +43,12 @@ function App() {
 				on: {
 					SET: {
 						target: 'active',
-						actions: (context, event) => {
-							console.log('setItem...context', context, 'event', event);
-							assign({ operateItem: event.data });
-						},
+						actions: ['setItem'],
+						// actions function可以直接寫在這裡
+						// actions: (context, event) => {
+						// 	console.log('setItem...context', context, 'event', event);
+						// 	assign({ operateItem: event.data });
+						// },
 					}
 				}
 			},
@@ -60,13 +62,22 @@ function App() {
 					},
 					SET: {
 						target: 'active',
-						actions: (context, event) => {
-							console.log('setItem...context', context, 'event', event);
-							assign({ operateItem: event.data });
-						},
+						actions: ['setItem'],
 					}
 				},
 			},
+		}
+	}, {
+		actions: {
+			// 不能這樣寫，沒辦法更新context
+			// setItem: (context, event) => {
+			// 	console.log('setItem...context', context, 'event', event);
+			// 	assign({ operateItem: event.data });
+			// },
+			// 要這樣寫
+			setItem: assign({
+				operateItem: (context, event) => event.data,
+			}),
 		}
 	});
 
@@ -91,7 +102,7 @@ function App() {
 					<button onClick={() => { console.log('狀態機目前狀態--state.value', state.value) }}>狀態機目前狀態</button>
 				</div>
 			</div>
-			<div>
+			<div className='app1'>
 				{/** 所處狀態 */}
 				{operateItem.matches('active') && <p>有</p>}
 				{operateItem.matches('inactive') && <p>無</p>}
